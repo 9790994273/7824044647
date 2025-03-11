@@ -1,0 +1,119 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>News App</h1>
+    </header>
+    <main>
+        <section id="news-section">
+            <h2>Latest News</h2>
+            <div id="news-container"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+*CSS (in styles.css file)*
+```
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em;
+}
+
+#news-section {
+    background-color: #f7f7f7;
+    padding: 1em;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#news-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.news-article {
+    background-color: #fff;
+    padding: 1em;
+    border: 1px solid #ddd;
+    margin: 1em;
+    width: calc(33.33% - 2em);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-article img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.news-article h3 {
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.news-article p {
+    margin-bottom: 1em;
+}
+```
+
+*JavaScript (in script.js file)*
+```
+// Fetch news data from API
+fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_API_KEY')
+    .then(response => response.json())
+    .then(data => {
+        // Get the news container element
+        const newsContainer = document.getElementById('news-container');
+
+        // Loop through each news article
+        data.articles.forEach(article => {
+            // Create a new news article element
+            const newsArticle = document.createElement('div');
+            newsArticle.classList.add('news-article');
+
+            // Add the news article image
+            const image = document.createElement('img');
+            image.src = article.urlToImage;
+            newsArticle.appendChild(image);
+
+            // Add the news article title and description
+            const title = document.createElement('h3');
+            title.textContent = article.title;
+            newsArticle.appendChild(title);
+
+            const description = document.createElement('p');
+            description.textContent = article.description;
+            newsArticle.appendChild(description);
+
+            // Add the news article to the news container
+            newsContainer.appendChild(newsArticle);
+        });
+    })
+    .catch(error => console.error(error));
+``
